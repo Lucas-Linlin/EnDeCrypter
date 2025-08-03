@@ -5,9 +5,10 @@ There are 3 functions to encrypt messages, and I will make another three to decr
 ...
 """
 from random import choice
-from os import system as cmd
+from tkinter import Tk, Label, Button, Entry, Text
+from tkinter.messagebox import showwarning
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 METHODS = ['A', 'B', 'C']
 
 
@@ -51,63 +52,77 @@ def _check(s: str):
     return True
 
 
-def repl():
-    print(
-        f"""Endecrypter V{__version__}!
-'e' to encrypt
-'d' to decrypt
-'q' to quit."""
-    )
-    while True:
-        command = input('>>> ')
-        match command:
-            case 'e' | 'encrypt':
-                message = input('Message >>> ').replace(' ', '·')
-                method = input(
-                    """Method
-A -> swap letters    ('12345678' -> '21436587')
-B -> insert letters  ('12345678' -> '1q2w3e4r5t6y7u8i')
-C -> reverse letters ('12345678' -> '87654321')
->>> """
-                )
-                if not _check(method):
-                    print('Invalid method.')
-                    continue
-                for i in method:
-                    match i.upper():
-                        case 'A':
-                            message = A_Z_swap(message)
-                        case 'B':
-                            message = B_insert(message)
-                        case 'C':
-                            message = C_X_reverse(message)
+def encrypt(message: str, method: str):
+    global encrypt_text
+    encrypt_text.delete('1.0', 'end')
+    if not _check(method):
+        showwarning('Warning', 'Invalid method')
+        return
+    for i in method.upper():
+        if i == 'A':
+            message = A_Z_swap(message)
+        elif i == 'B':
+            message = B_insert(message)
+        elif i == 'C':
+            message = C_X_reverse(message)
+    encrypt_text.insert('end', message)
 
-                print(f'Encrypted message:\n{message}')
-            case 'd' | 'decrypt':
 
-                message = input('Message >>> ').replace('·', ' ')
-                method = input('Method  >>> ')
-                if not _check(method):
-                    print('Invalid method.')
-                    continue
-                for i in reversed(list(method)):
-                    match i.upper():
-                        case 'A':
-                            message = A_Z_swap(message)
-                        case 'B':
-                            message = Y_rstrip(message)
-                        case 'C':
-                            message = C_X_reverse(message)
-                print(f'Decrypted message:\n{message}')
-            case 'q' | 'quit' | 'exit':
-                break
+def decrypt(message: str, method: str):
+    global decrypt_text
+    decrypt_text.delete('1.0', 'end')
+    if not _check(method):
+        showwarning('Warning', 'Invalid method')
+        return
+    for i in reversed(method.upper()):
+        if i == 'A':
+            message = A_Z_swap(message)
+        elif i == 'B':
+            message = Y_rstrip(message)
+        elif i == 'C':
+            message = C_X_reverse(message)
+    decrypt_text.insert('end', message)
 
-            case 'cls' | 'clear':
-                cmd('cls')
 
-            case _:
-                print('Invalid command.')
+def main():
+    global encrypt_text, decrypt_text
+    root = Tk()
+    root.title(f'EnDeCrypter v{__version__}')
+    # Spacer
+    Label(root, text=f' Encrypt Zone{' '*25}|{' '*25}Decrypt Zone').grid(
+        column=0, row=0, columnspan=5)
+    # Encrypt
+    l1 = Label(root, text='Message:')
+    l1.grid(column=0, row=1)
+    e1 = Entry(root, width=30)
+    e1.grid(column=1, row=1)
+    l2 = Label(root, text=' Method:')
+    l2.grid(column=0, row=2)
+    e2 = Entry(root, width=30)
+    e2.grid(column=1, row=2)
+    b1 = Button(root, text='Encrypt',
+                width=20, command=lambda: encrypt(e1.get(), e2.get()))
+    b1.grid(column=0, row=3, columnspan=2)
+    encrypt_text = Text(root, width=40, height=5)
+    encrypt_text.grid(column=0, row=4, columnspan=2)
+    # Spacer
+    Label(root, text='  ').grid(column=2, row=1)
+    # Decrypt
+    l3 = Label(root, text='Message:')
+    l3.grid(column=3, row=1)
+    e3 = Entry(root, width=30)
+    e3.grid(column=4, row=1)
+    l4 = Label(root, text=' Method:')
+    l4.grid(column=3, row=2)
+    e4 = Entry(root, width=30)
+    e4.grid(column=4, row=2)
+    b2 = Button(root, text='Decrypt',
+                width=20, command=lambda: decrypt(e3.get(), e4.get()))
+    b2.grid(column=3, row=3, columnspan=2)
+    decrypt_text = Text(root, width=40, height=5)
+    decrypt_text.grid(column=3, row=4, columnspan=2)
+    root.mainloop()
 
 
 if __name__ == '__main__':
-    repl()
+    main()
