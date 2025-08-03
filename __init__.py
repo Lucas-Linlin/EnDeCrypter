@@ -1,13 +1,11 @@
 """
 This is my first time to carefully write a docstring.
-(Oh, VSCode's intelligent code completion !)
 This is a module to provide users with self-define message en(de)crypt tool.
-(Oh, VSCode's intelligent code completion x2 !!)
 There are 3 functions to encrypt messages, and I will make another three to decrypt messages.
-(Oh, VSCode's intelligent code completion x3 !!!)
 ...
 """
 from random import choice
+from os import system as cmd
 
 __version__ = '0.1.0'
 METHODS = ['A', 'B', 'C']
@@ -64,7 +62,7 @@ def repl():
         command = input('>>> ')
         match command:
             case 'e' | 'encrypt':
-                message = input('Message >>> ')
+                message = input('Message >>> ').replace(' ', '·')
                 method = input(
                     """Method
 A -> swap letters    ('12345678' -> '21436587')
@@ -87,7 +85,7 @@ C -> reverse letters ('12345678' -> '87654321')
                 print(f'Encrypted message:\n{message}')
             case 'd' | 'decrypt':
 
-                message = input('Message >>> ')
+                message = input('Message >>> ').replace('·', ' ')
                 method = input('Method  >>> ')
                 if not _check(method):
                     print('Invalid method.')
@@ -101,8 +99,12 @@ C -> reverse letters ('12345678' -> '87654321')
                         case 'C':
                             message = C_X_reverse(message)
                 print(f'Decrypted message:\n{message}')
-            case 'q' | 'quit':
+            case 'q' | 'quit' | 'exit':
                 break
+
+            case 'cls' | 'clear':
+                cmd('cls')
+
             case _:
                 print('Invalid command.')
 
