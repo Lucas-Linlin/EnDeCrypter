@@ -10,7 +10,7 @@ from tkinter.messagebox import showwarning
 
 __version__ = '0.2.0'
 METHODS = ['A', 'B', 'C']
-
+CHOICE_STR = 'qwe!@#$%&我你他的人了和着过的得地之乎者也如果那么*rtyudylgfshjsajkaSIGOGAIBIUTGUVCUDW^&MUYSiopASD[]{}()FGHJKL'
 
 def A_Z_swap(message: str):
     l = list(message)
@@ -29,8 +29,7 @@ def B_insert(message: str):
     l2 = []
     for i in l1:
         l2.append(i)
-        l2.append(choice(
-            'qwe!@#$%&我你他的人了和着过的得地之乎者也如果那么*rtyudylgfshjsajkaSIGOGAIBIUTGUVCUDW^&MUYSiopASD[]{}()FGHJKL'))
+        l2.append(choice(CHOICE_STR))
     return ''.join(l2)
 
 
@@ -100,8 +99,14 @@ def main():
     l2.grid(column=0, row=2)
     e2 = Entry(root, width=30)
     e2.grid(column=1, row=2)
-    b1 = Button(root, text='Encrypt',
-                width=20, command=lambda: encrypt(e1.get(), e2.get()))
+    b1 = Button(
+        root,
+        text='Encrypt',
+        width=20,
+        command=lambda: encrypt(
+            e1.get().replace(' ', '·'),
+            e2.get()
+        ))
     b1.grid(column=0, row=3, columnspan=2)
     encrypt_text = Text(root, width=40, height=5)
     encrypt_text.grid(column=0, row=4, columnspan=2)
@@ -116,11 +121,33 @@ def main():
     l4.grid(column=3, row=2)
     e4 = Entry(root, width=30)
     e4.grid(column=4, row=2)
-    b2 = Button(root, text='Decrypt',
-                width=20, command=lambda: decrypt(e3.get(), e4.get()))
+    b2 = Button(
+        root,
+        text='Decrypt',
+        width=20,
+        command=lambda: decrypt(
+            e3.get().replace('·', ' '),
+            e4.get()
+        ))
     b2.grid(column=3, row=3, columnspan=2)
     decrypt_text = Text(root, width=40, height=5)
     decrypt_text.grid(column=3, row=4, columnspan=2)
+    # End
+    B1 = Button(root, text='Quit', width=40, command=root.quit)
+    B1.grid(column=0, row=5, columnspan=2)
+    B2 = Button(
+        root,
+        text='Clear',
+        width=40,
+        command=lambda: [
+            e1.delete(0, 'end'),
+            e2.delete(0, 'end'),
+            e3.delete(0, 'end'),
+            e4.delete(0, 'end'),
+            encrypt_text.delete('1.0', 'end'),
+            decrypt_text.delete('1.0', 'end')
+            ])
+    B2.grid(column=3, row=5, columnspan=2)
     root.mainloop()
 
 
