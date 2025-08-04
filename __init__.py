@@ -12,6 +12,7 @@ __version__ = '0.2.0'
 METHODS = ['A', 'B', 'C']
 CHOICE_STR = 'qwe!@#$%&我你他的人了和着过的得地之乎者也如果那么*rtyudylgfshjsajkaSIGOGAIBIUTGUVCUDW^&MUYSiopASD[]{}()FGHJKL'
 
+
 def A_Z_swap(message: str):
     l = list(message)
     for i in range(0, len(l) // 2 * 2 - 1, 2):
@@ -146,7 +147,7 @@ def main():
             e4.delete(0, 'end'),
             encrypt_text.delete('1.0', 'end'),
             decrypt_text.delete('1.0', 'end')
-            ])
+        ])
     B2.grid(column=3, row=5, columnspan=2)
     root.mainloop()
 
