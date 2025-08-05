@@ -12,7 +12,7 @@ Go to "release" page to [get the last update](https://github.com/Lucas-Linlin/En
 
 ### 2.2 Application GUI
 
-The ~~ugly ~~ GUI of the application will look like this:
+The ~~ugly~~ GUI of the application will look like this:
 
 ![1754311197948](images/README/1754311197948.png)
 
