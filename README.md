@@ -6,9 +6,11 @@ Copyright (c) 2025 zhilin.tang@qq.com. All rights reserved.Infringement will be 
 
 ## 2. User Guide
 
-### 2.1 Download
+### 2.1 Download & Run
 
 Go to "release" page to [get the last update](https://github.com/Lucas-Linlin/EnDeCrypter/releases) (EnDeCrypter.exe).
+
+Because there is no license at the moment, so Windows will prevent you from running the program when you double-click on it. Click on "Advanced Information" in the pop-up window and then "Still want to run".
 
 ### 2.2 Application GUI
 
@@ -48,8 +50,9 @@ There are some valid and invalid methods examples:
 - "abc" is a valid method
 - "ab" is a valid method
 - "abcd" is an invalid method (includes invalid letter 'd')
-- "123" is an invalid method (doesn't include letter 'a', 'b' or 'c', and includes invalid character '123')
+- "123" is an invalid method (doesn't include letter 'a', 'b' or 'c', and includes invalid characters '123')
 - "abCbaABCABACac" is a valid method
+- "abcabc1234qwabcabc" is an invalid method (includes ivalid characters)
 - ...
 
 If you don't know the meaning of letters a, b, and c, you can just consider the method as a password to encrypt/decrypt the message.
