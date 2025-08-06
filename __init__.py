@@ -7,10 +7,25 @@ There are 3 functions to encrypt messages, and I will make another three to decr
 from random import choice
 from tkinter import Tk, Label, Button, Entry, Text
 from tkinter.messagebox import showwarning
+from time import time, strftime
+from pathlib import Path
 
 __version__ = '0.3.0'
 METHODS = ['A', 'B', 'C']
 CHOICE_STR = 'qwe!@#$%&我你他的人了和着过的得地之乎者也如果那么*rtyudylgfshjsajkaSIGOGAIBIUTGUVCUDW^&MUYSiopASD[]{}()FGHJKL'
+START = time()
+_root_path = Path(__file__).parent
+
+
+def init_log():
+    with open(_root_path / 'logs.log', 'w+') as f:
+        f.write(
+            f'{strftime("%Y-%m-%d %H:%M:%S")}\nEnDeCrypter v{__version__} started.\n')
+
+
+def log(s: str, level='info'):
+    with open('logs.log', 'a') as f:
+        f.write(f'[{(time()-START)*1000}ms][{level.upper()}] {s}\n')
 
 
 def A_Z_swap(message: str):
@@ -45,6 +60,56 @@ def C_X_reverse(message: str):
     return ''.join(reversed(list(message)))
 
 
+def Password(message: str, password: str):
+    if not _check_password(password):
+        showwarning('Warning', 'Invalid password')
+        raise ValueError('Invalid password')
+    pw = int(password) % 32
+    l = list(message)
+    for i, c in enumerate(l):
+        if c.isalpha():
+            if c.isupper():
+                l[i] = chr(ord(c)+pw)
+            else:
+                l[i] = chr(ord(c)-pw)
+        elif c.isdigit():
+            if int(c)+(pw % 10) < 10:
+                l[i] = str(int(c)+(pw % 10))
+            elif int(c)-(pw % 10) >= 0:
+                l[i] = str(int(c)-(pw % 10))
+            else:
+                l[i] = c
+        else:
+            l[i] = c
+    message = ''.join(l)
+    return message
+
+
+def passworD(message: str, password: str):
+    if not _check_password(password):
+        showwarning('Warning', 'Invalid password')
+        raise ValueError('Invalid password')
+    pw = int(password) % 32
+    l = list(message)
+    for i, c in enumerate(l):
+        if c.isalpha():
+            if c.isupper():
+                l[i] = chr(ord(c)-pw)
+            else:
+                l[i] = chr(ord(c)+pw)
+        elif c.isdigit():
+            if int(c)+(pw % 10) >= 10:
+                l[i] = str(int(c)-(pw % 10))
+            elif int(c)-(pw % 10) < 0:
+                l[i] = str(int(c)+(pw % 10))
+            else:
+                l[i] = c
+        else:
+            l[i] = c
+    message = ''.join(l)
+    return message
+
+
 def _check_method(s: str):
     for i in s.upper():
         if i not in METHODS:
@@ -68,27 +133,11 @@ def encrypt(message: str, method: str, password: str):
     if not _check_method(method):
         showwarning('Warning', 'Invalid method')
         return
-    if not _check_password(password):
-        showwarning('Warning', 'Invalid password')
+    try:
+        message = Password(message, password)
+    except ValueError:
         return
-    pw = int(password) % 32
-    l = list(message)
-    for i, c in enumerate(l):
-        if c.isalpha():
-            if c.isupper():
-                l[i] = chr(ord(c)+pw)
-            else:
-                l[i] = chr(ord(c)-pw)
-        elif c.isdigit():
-            if int(c)+(pw % 10) < 10:
-                l[i] = str(int(c)+(pw % 10))
-            elif int(c)-(pw % 10) >= 0:
-                l[i] = str(int(c)-(pw % 10))
-            else:
-                l[i] = c
-        else:
-            l[i] = c
-    message = ''.join(l)
+
     for i in method.upper():
         if i == 'A':
             message = A_Z_swap(message)
@@ -106,27 +155,11 @@ def decrypt(message: str, method: str, password: str):
     if not _check_method(method):
         showwarning('Warning', 'Invalid method')
         return
-    if not _check_password(password):
-        showwarning('Warning', 'Invalid password')
+    try:
+        message = Password(message, password)
+    except ValueError:
         return
-    pw = int(password) % 32
-    l = list(message)
-    for i, c in enumerate(l):
-        if c.isalpha():
-            if c.isupper():
-                l[i] = chr(ord(c)-pw)
-            else:
-                l[i] = chr(ord(c)+pw)
-        elif c.isdigit():
-            if int(c)+(pw % 10) >= 10:
-                l[i] = str(int(c)-(pw % 10))
-            elif int(c)-(pw % 10) < 0:
-                l[i] = str(int(c)+(pw % 10))
-            else:
-                l[i] = c
-        else:
-            l[i] = c
-    message = ''.join(l)
+
     for i in reversed(method.upper()):
         if i == 'A':
             message = A_Z_swap(message)
@@ -138,6 +171,7 @@ def decrypt(message: str, method: str, password: str):
 
 
 def main():
+    init_log()
     global encrypt_text, decrypt_text
     root = Tk()
     root.title(f'EnDeCrypter v{__version__}')
@@ -232,9 +266,10 @@ def main():
             decrypt_text.delete('1.0', 'end')
         ])
     B2.grid(column=3, row=6, columnspan=2)
-
+    log(f'Elements created successfully.')
     root.mainloop()
 
 
 if __name__ == '__main__':
     main()
+    log('Program exited successfully.')
