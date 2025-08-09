@@ -1,5 +1,5 @@
-# Endecrypter v0.2.0
-
+# Endecrypter v0.2.0 manual
+# **!!! This manual is only for EnDeCrypter v0.2.0 or below, and not for v0.3.0 or above!!!**
 ## 1. Licence
 
 Copyright (c) 2025 zhilin.tang@qq.com. All rights reserved.Infringement will be prosecuted.
