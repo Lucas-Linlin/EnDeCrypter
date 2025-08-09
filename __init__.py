@@ -104,8 +104,9 @@ def Password(message: str, password: str):
     if not _check_password(password):
         showwarning('Warning', 'Invalid password')
         raise ValueError('Invalid password')
-    pw = int(password) % 32
+    pw = ((int(password) % 32)**2) %10
     l = list(message)
+    
     for i, c in enumerate(l):
         if c.isalpha():
             if c.isupper():
