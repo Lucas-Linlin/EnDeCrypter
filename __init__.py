@@ -7,28 +7,42 @@ There are 3 functions to encrypt messages, and I will make another three to decr
 from random import choice
 from tkinter import Tk, Label, Button, Entry, Text
 from tkinter.messagebox import showwarning
-from time import time, strftime
+from time import time
+from datetime import datetime
 from pathlib import Path
 
-__version__ = '0.3.0'
+__version__ = '0.3.2-alpha'
 METHODS = ['A', 'B', 'C']
 CHOICE_STR = 'qwe!@#$%&我你他的人了和着过的得地之乎者也如果那么*rtyudylgfshjsajkaSIGOGAIBIUTGUVCUDW^&MUYSiopASD[]{}()FGHJKL'
-START = time()
-_root_path = Path(__file__).parent
+START: float = time()
+rootPath = Path(__file__).parent
+_DEBUG_MODE = True
 
 
-def init_log():
-    with open(_root_path / 'logs.log', 'w+') as f:
-        f.write(
-            f'{strftime("%Y-%m-%d %H:%M:%S")}\nEnDeCrypter v{__version__} started.\n')
+def initLog():
+    if not _DEBUG_MODE:
+        return
+    with open(rootPath / 'logs.log', 'w', encoding='utf-8') as file:
+        file.write(
+            f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\nEnDeCrypter v{__version__}\n')
 
 
-def log(s: str, level='info'):
-    with open('logs.log', 'a') as f:
-        f.write(f'[{(time()-START)*1000}ms][{level.upper()}] {s}\n')
+def log(log: str, level: str = 'info'):
+    if not _DEBUG_MODE:
+        return
+    current = time()
+    elapsed = int((current - START) * 1000)
+    with open(rootPath / 'logs.log', 'a', encoding='utf-8') as file:
+        file.write(f"[{elapsed:7} ms] [{level.upper()}] {log}\n")
 
 
 def A_Z_swap(message: str):
+    '''A function to swap strings.
+    >>> A_Z_swap('12345678')
+    '21436587'
+    >>> A_Z_swap('abcdefgh')
+    'badcfehg'
+    '''
     l = list(message)
     for i in range(0, len(l) // 2 * 2 - 1, 2):
         t = l[i]
@@ -41,6 +55,12 @@ def A_Z_swap(message: str):
 
 
 def B_insert(message: str):
+    '''A function to insert random characters to strings.
+    >>> B_insert('12345678') #doctest:+ELLIPSIS
+    '1...2...3...4...5...6...7...8...'
+    >>> B_insert('abcdefgh') #doctest:+ELLIPSIS
+    'a...b...c...d...e...f...g...h...'
+    '''
     l1 = list(message)
     l2 = []
     for i in l1:
@@ -50,6 +70,12 @@ def B_insert(message: str):
 
 
 def Y_rstrip(message: str):
+    '''A function to remove the spare characters in each pair of the string.
+    >>> Y_rstrip('12345678')
+    '1357'
+    >>> Y_rstrip('1a2b3c4d5e')
+    '12345'
+    '''
     l = []
     for i in range(0, len(message), 2):
         l.append(message[i])
@@ -57,10 +83,24 @@ def Y_rstrip(message: str):
 
 
 def C_X_reverse(message: str):
+    '''A function to reverse strings.
+    >>> C_X_reverse('12345678')
+    '87654321'
+    >>> C_X_reverse('abcdefgh')
+    'hgfedcba'
+    '''
     return ''.join(reversed(list(message)))
 
 
 def Password(message: str, password: str):
+    '''A function to encrypy strings with given password.
+    >>> Password('12345678', '1048567')
+    '45678945'
+    >>> Password('abcdefgh', '1048567')
+    'JKLMNOPQ'
+    >>> Password('你好，世界', '1048567')
+    '你好，世界'
+    '''
     if not _check_password(password):
         showwarning('Warning', 'Invalid password')
         raise ValueError('Invalid password')
@@ -86,6 +126,14 @@ def Password(message: str, password: str):
 
 
 def passworD(message: str, password: str):
+    '''A function to decrypy strings with given password.
+    >>> passworD('45678945', '1048567')
+    '12345678'
+    >>> passworD('JKLMNOPQ', '1048567')
+    'abcdefgh'
+    >>> passworD('你好，世界', '1048567')
+    '你好，世界'
+    '''
     if not _check_password(password):
         showwarning('Warning', 'Invalid password')
         raise ValueError('Invalid password')
@@ -106,6 +154,7 @@ def passworD(message: str, password: str):
                 l[i] = c
         else:
             l[i] = c
+
     message = ''.join(l)
     return message
 
@@ -155,10 +204,6 @@ def decrypt(message: str, method: str, password: str):
     if not _check_method(method):
         showwarning('Warning', 'Invalid method')
         return
-    try:
-        message = Password(message, password)
-    except ValueError:
-        return
 
     for i in reversed(method.upper()):
         if i == 'A':
@@ -167,11 +212,15 @@ def decrypt(message: str, method: str, password: str):
             message = Y_rstrip(message)
         elif i == 'C':
             message = C_X_reverse(message)
+    try:
+        message = Password(message, password)
+    except ValueError:
+        return
     decrypt_text.insert('end', message)
 
 
 def main():
-    init_log()
+    log('Enter main().')
     global encrypt_text, decrypt_text
     root = Tk()
     root.title(f'EnDeCrypter v{__version__}')
@@ -266,10 +315,11 @@ def main():
             decrypt_text.delete('1.0', 'end')
         ])
     B2.grid(column=3, row=6, columnspan=2)
-    log(f'Elements created successfully.')
+    log('Elements inited successfully.')
     root.mainloop()
 
 
 if __name__ == '__main__':
+    initLog()
     main()
     log('Program exited successfully.')
