@@ -93,20 +93,13 @@ def C_X_reverse(message: str):
 
 
 def Password(message: str, password: str):
-    '''A function to encrypy strings with given password.
-    >>> Password('12345678', '1048567')
-    '45678945'
-    >>> Password('abcdefgh', '1048567')
-    'JKLMNOPQ'
-    >>> Password('你好，世界', '1048567')
-    '你好，世界'
-    '''
+    '''A function to encrypy strings with given password.'''
     if not _check_password(password):
         showwarning('Warning', 'Invalid password')
         raise ValueError('Invalid password')
-    pw = ((int(password) % 32)**2) %10
+    pw = ((int(password) % 16)**2) % 16
     l = list(message)
-    
+
     for i, c in enumerate(l):
         if c.isalpha():
             if c.isupper():
@@ -122,24 +115,21 @@ def Password(message: str, password: str):
                 l[i] = c
         else:
             l[i] = c
+    pw = f'{pw:02d}'
     message = ''.join(l)
-    return message
+    return message+pw
 
 
 def passworD(message: str, password: str):
-    '''A function to decrypy strings with given password.
-    >>> passworD('45678945', '1048567')
-    '12345678'
-    >>> passworD('JKLMNOPQ', '1048567')
-    'abcdefgh'
-    >>> passworD('你好，世界', '1048567')
-    '你好，世界'
-    '''
+    '''A function to decrypy strings with given password.'''
     if not _check_password(password):
         showwarning('Warning', 'Invalid password')
         raise ValueError('Invalid password')
-    pw = int(password) % 32
+    pw = ((int(password) % 16)**2) % 16
     l = list(message)
+    if int(message[-2:])!=pw:
+        showwarning('Warning', 'Invalid password')
+        return
     for i, c in enumerate(l):
         if c.isalpha():
             if c.isupper():
