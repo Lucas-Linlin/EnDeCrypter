@@ -11,7 +11,7 @@ from time import time
 from datetime import datetime
 from pathlib import Path
 
-__version__ = '0.3.2-alpha'
+__version__ = '0.3.2'
 METHODS = ['A', 'B', 'C']
 CHOICE_STR = 'qwe!@#$%&我你他的人了和着过的得地之乎者也如果那么*rtyudylgfshjsajkaSIGOGAIBIUTGUVCUDW^&MUYSiopASD[]{}()FGHJKL'
 START: float = time()
@@ -56,10 +56,10 @@ def A_Z_swap(message: str):
 
 def B_insert(message: str):
     '''A function to insert random characters to strings.
-    >>> B_insert('12345678') #doctest:+ELLIPSIS
-    '1...2...3...4...5...6...7...8...'
-    >>> B_insert('abcdefgh') #doctest:+ELLIPSIS
-    'a...b...c...d...e...f...g...h...'
+    >>> B_insert('12345678')[::2]
+    '12345678'
+    >>> B_insert('abcdefgh')[::2]
+    'abcdefgh'
     '''
     l1 = list(message)
     l2 = []
@@ -96,58 +96,43 @@ def Password(message: str, password: str):
     '''A function to encrypy strings with given password.'''
     if not _check_password(password):
         showwarning('Warning', 'Invalid password')
-        raise ValueError('Invalid password')
-    pw = ((int(password) % 16)**2) % 16
-    l = list(message)
-
-    for i, c in enumerate(l):
-        if c.isalpha():
-            if c.isupper():
-                l[i] = chr(ord(c)+pw)
-            else:
-                l[i] = chr(ord(c)-pw)
-        elif c.isdigit():
-            if int(c)+(pw % 10) < 10:
-                l[i] = str(int(c)+(pw % 10))
-            elif int(c)-(pw % 10) >= 0:
-                l[i] = str(int(c)-(pw % 10))
-            else:
-                l[i] = c
+        raise ValueError
+    pw = (int(password) % 32)**2 % 11
+    new = f'{pw:02d}'[0]
+    for i in message:
+        if i.isalpha():
+            new += '-'
+            new += chr(ord(i)-pw)
+        elif i.isdigit():
+            new += '+'
+            new += chr(ord(i)+pw)
         else:
-            l[i] = c
-    pw = f'{pw:02d}'
-    message = ''.join(l)
-    return message+pw
+            new += '|'
+            new += i
+    new += f'{pw:02d}'[1]
+    return new
 
 
 def passworD(message: str, password: str):
     '''A function to decrypy strings with given password.'''
     if not _check_password(password):
         showwarning('Warning', 'Invalid password')
-        raise ValueError('Invalid password')
-    pw = ((int(password) % 16)**2) % 16
-    l = list(message)
-    if int(message[-2:])!=pw:
-        showwarning('Warning', 'Invalid password')
-        return
-    for i, c in enumerate(l):
-        if c.isalpha():
-            if c.isupper():
-                l[i] = chr(ord(c)-pw)
-            else:
-                l[i] = chr(ord(c)+pw)
-        elif c.isdigit():
-            if int(c)+(pw % 10) >= 10:
-                l[i] = str(int(c)-(pw % 10))
-            elif int(c)-(pw % 10) < 0:
-                l[i] = str(int(c)+(pw % 10))
-            else:
-                l[i] = c
-        else:
-            l[i] = c
-
-    message = ''.join(l)
-    return message
+        raise ValueError
+    pw = (int(password) % 32)**2 % 11
+    wp = int(message[0]+message[-1])
+    if (pw != wp):
+        showwarning('Warning', 'Invalid message')
+    message = message[1:-1]
+    new = ''
+    for i in range(0, len(message), 2):
+        match message[i]:
+            case '-':
+                new += chr(ord(message[i+1])+pw)
+            case '+':
+                new += chr(ord(message[i+1])-pw)
+            case _:
+                new += message[i+1]
+    return new
 
 
 def _check_method(s: str):
@@ -160,9 +145,10 @@ def _check_method(s: str):
 def _check_password(s: str):
     try:
         int(s)
-        return True
     except ValueError:
         return False
+    else:
+        return True
 
 
 def encrypt(message: str, method: str, password: str):
@@ -204,7 +190,7 @@ def decrypt(message: str, method: str, password: str):
         elif i == 'C':
             message = C_X_reverse(message)
     try:
-        message = Password(message, password)
+        message = passworD(message, password)
     except ValueError:
         return
     decrypt_text.insert('end', message)
@@ -302,6 +288,8 @@ def main():
             e2.delete(0, 'end'),
             e3.delete(0, 'end'),
             e4.delete(0, 'end'),
+            e5.delete(0, 'end'),
+            e6.delete(0, 'end'),
             encrypt_text.delete('1.0', 'end'),
             decrypt_text.delete('1.0', 'end')
         ])
