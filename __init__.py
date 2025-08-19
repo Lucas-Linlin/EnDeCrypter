@@ -13,7 +13,7 @@ from pathlib import Path
 
 __version__ = '0.3.2'
 METHODS = ['A', 'B', 'C']
-CHOICE_STR = 'qwe!@#$%&我你他的人了和着过的得地之乎者也如果那么*rtyudylgfshjsajkaSIGOGAIBIUTGUVCUDW^&MUYSiopASD[]{}()FGHJKL'
+CHOICE_STR = 'qwe!@#$%&我你他的人了和着过的得地之乎者也如果那么*rtyudylgfshjsajkaSIGOGAIBIUTGUVCUDW^&MUYSiopASD[]{}()FGHJKL++--**|||@*#&@*uhuu|}{[]||///1123817212345678900987654321}'
 START: float = time()
 rootPath = Path(__file__).parent
 _DEBUG_MODE = True
@@ -122,6 +122,7 @@ def passworD(message: str, password: str):
     wp = int(message[0]+message[-1])
     if (pw != wp):
         showwarning('Warning', 'Invalid message')
+        raise ValueError
     message = message[1:-1]
     new = ''
     for i in range(0, len(message), 2):
