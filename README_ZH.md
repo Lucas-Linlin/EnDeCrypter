@@ -8,7 +8,11 @@
 ### 2.1 下载与运行
 [转到 "release" 页面](https://github.com/Lucas-Linlin/EnDeCrypter/releases) 并下载最新版本的 `EnDeCrypter.exe`。
 
-由于此软件暂未获得Windows安全签名，所以Windows可能会阻止您运行此软件。双击下载后的文件，点击弹出窗口中的“更多选项”，再点击“仍要运行”即可。
+由于此软件暂未获得Windows安全签名，所以Windows可能会阻止您运行此软件。双击下载后的文件，点击弹出窗口中的“更多信息”，再点击“仍要运行”即可。
+
+![5](images/README/5.png)
+
+![6](images/README/6.png)
 
 ### 2.2 用户界面
 

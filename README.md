@@ -11,6 +11,10 @@ Copyright (c) 2025 zhilin.tang@qq.com. All rights reserved. Infringement will be
 
 Because there is no license for Windows at the moment, so Windows will prevent you from running the program when you double-click on it. Click on "Advanced Information" in the pop-up window and then "Still want to run".
 
+![5](images/README/5.png)
+
+![6](images/README/6.png)
+
 ### 2.2 Application GUI
 
 The ~~ugly~~ GUI of the application will look like this:
