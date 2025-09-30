@@ -1,0 +1,85 @@
+% !TEX program = xelatex
+\documentclass{article}
+\usepackage[UTF8]{ctex}
+\usepackage{listings}
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    tabsize=4
+}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{mathptmx}
+\usetikzlibrary{calc, shapes, arrows, angles}
+\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, citecolor=green]{hyperref}
+
+\title{加解密器 V0.3.2 用户手册}
+\author{LinLUCAS}
+\date{\today}
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{引言}
+感谢您安装加解密器。在使用之前，请务必阅读此用户手册。
+
+加解密器是一个成立于2025年的项目，旨在帮助人们传递秘密消息和记录（不）重要的机密。
+\section{用户协议与隐私条款}
+
+\subsection{用户协议}
+
+加解密器（以下简称“本软件”）是一个开源、免费的软件。
+
+本软件是且仅是一个娱乐用软件，不可用于商业、政治等正式用途。
+
+本软件开源，但您不能将本软件以任何形式进行免费或收费的二次分发。
+
+您可以参考本软件的源代码进行自己的软件创作。但引用超过10行代码需联系我们获得许可。
+
+\subsection{隐私条款}
+
+我们不会窃取您的任何个人信息，包括但不限于姓名、性别、银行账号等。
+
+我们会获取您输入的文本。请确保其中不含任何敏感信息。如发生信息泄露，我们不能保证您的信息的绝对安全。
+
+\section{使用指南}
+
+\subsection{下载与安装}
+
+访问\href{https://github.com/Lucas-Linlin/EnDeCrypter/releases/latest}{这个链接}以获取最新编译的程序，下载 \lstinline|EnDeCrypter.exe|。下载完成后，请直接双击运行即可。
+
+如被Windows报为病毒，请参考\href{https://github.com/Lucas-Linlin/EnDeCrypter/}{这里的README.md}解决。
+
+\subsection{加密与解密}
+
+\subsubsection{加密}
+
+要加密一条信息，您首先需要确定一个方法和一个密码。
+
+方法，即加密的方法，由一个或几个不区分大小写的字母‘a’、‘b’或‘c’构成。方法的长度必须大于等于1，但每个字母不必都出现。它决定了您的信息将会经过怎样的（物理性）处理。其中，‘a’代表转换字符（ABCDEFGH $\rightarrow$ BADCFEHG），‘c’代表倒置字符串，‘b’代表随机插入字符。
+
+密码，就是一串纯数字。它必须为一个正整数。
+
+当您（随便）想好了一个方法和一个密码以后，您就可以把信息、方法和密码输入进对应的输入框中。点击“加密”按钮，您就可以在下面的输出框中看见输出了！
+
+\subsubsection{解密}
+
+解密与加密很相似，把对应的信息、方法、密码输入进输入框中，再点击“解密”按钮即可解密。
+
+**注意，错误的方法或密码一定会导致解密失败！所以不要妄图破译密码或加密后的机密消息！**
+
+\subsection{信息安全性}
+
+由于采用了先进的算法，使用本软件进行加密的信息很难被破译。但要注意的是，消息被破译的可能性并非为零（事实上没有几个加密算法能真正做到这点）。
+
+在此，我们还是要提示您：保存好您的方法和密码。加密有风险，使用需谨慎！
+
+\section{结语}
+
+再次感谢您安装加解密器。祝您使用愉快！
+\end{document}
