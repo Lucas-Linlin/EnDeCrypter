@@ -4,14 +4,17 @@ This is a module to provide users with self-define message en(de)crypt tool.
 There are 3 functions to encrypt messages, and I will make another three to decrypt messages.
 ...
 """
-from random import choice
-from tkinter import Tk, Label, Button, Entry, Text
-from tkinter.messagebox import showwarning
-from time import time
-from datetime import datetime
+import sys
 from pathlib import Path
+from datetime import datetime
+from time import time
+from edcterGUI import Ui_root
+from random import choice
+from PySide6.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget
+from PySide6.QtWidgets import QMessageBox
+showwarning = QMessageBox.warning
 
-__version__ = '0.3.2'
+__version__ = '1.0.0'
 METHODS = ['A', 'B', 'C']
 CHOICE_STR = 'qwe!@#$%&我你他的人了和着过的得地之乎者也如果那么*rtyudylgfshjsajkaSIGOGAIBIUTGUVCUDW^&MUYSiopASD[]{}()FGHJKL++--**|||@*#&@*uhuu|}{[]||///1123817212345678900987654321}'
 START: float = time()
@@ -36,270 +39,201 @@ def log(log: str, level: str = 'info'):
         file.write(f"[{elapsed:7} ms] [{level.upper()}] {log}\n")
 
 
-def A_Z_swap(message: str):
-    '''A function to swap strings.
-    >>> A_Z_swap('12345678')
-    '21436587'
-    >>> A_Z_swap('abcdefgh')
-    'badcfehg'
-    '''
-    l = list(message)
-    for i in range(0, len(l) // 2 * 2 - 1, 2):
-        t = l[i]
-        try:
-            l[i] = l[i + 1]
-            l[i + 1] = t
-        except IndexError:
-            break
-    return ''.join(l)
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_root()
+        self.ui.setupUi(self)
+        self.ui.out_text1.setReadOnly(True)
+        self.ui.out_text2.setReadOnly(True)
 
+        self.ui.clear_button.clicked.connect(self.clear_boxes)
 
-def B_insert(message: str):
-    '''A function to insert random characters to strings.
-    >>> B_insert('12345678')[::2]
-    '12345678'
-    >>> B_insert('abcdefgh')[::2]
-    'abcdefgh'
-    '''
-    l1 = list(message)
-    l2 = []
-    for i in l1:
-        l2.append(i)
-        l2.append(choice(CHOICE_STR))
-    return ''.join(l2)
+        self.ui.encrypt_button.clicked.connect(
+            lambda: self.encrypt(
+                self.ui.msg_input1.text(),
+                self.ui.mtd_input1.text(),
+                self.ui.psw_input1.text()
+                )
+            )
+        
+        self.ui.decrypt_button.clicked.connect(
+            lambda: self.decrypt(
+                self.ui.msg_input2.text(),
+                self.ui.mtd_input2.text(),
+                self.ui.psw_input2.text()
+                )
+            )
+        
+        self.ui.exit_button.clicked.connect(sys.exit)
 
+    def clear_boxes(self):
+        self.ui.msg_input1.clear()
+        self.ui.msg_input2.clear()
 
-def Y_rstrip(message: str):
-    '''A function to remove the spare characters in each pair of the string.
-    >>> Y_rstrip('12345678')
-    '1357'
-    >>> Y_rstrip('1a2b3c4d5e')
-    '12345'
-    '''
-    l = []
-    for i in range(0, len(message), 2):
-        l.append(message[i])
-    return ''.join(l)
+        self.ui.mtd_input1.clear()
+        self.ui.mtd_input2.clear()
 
+        self.ui.psw_input1.clear()
+        self.ui.psw_input2.clear()
 
-def C_X_reverse(message: str):
-    '''A function to reverse strings.
-    >>> C_X_reverse('12345678')
-    '87654321'
-    >>> C_X_reverse('abcdefgh')
-    'hgfedcba'
-    '''
-    return ''.join(reversed(list(message)))
+        self.ui.out_text1.clear()
+        self.ui.out_text2.clear()
 
+    def A_Z_swap(self, message: str):
+        '''A function to swap strings.
+        >>> A_Z_swap('12345678')
+        '21436587'
+        >>> A_Z_swap('abcdefgh')
+        'badcfehg'
+        '''
+        l = list(message)
+        for i in range(0, len(l) // 2 * 2 - 1, 2):
+            t = l[i]
+            try:
+                l[i] = l[i + 1]
+                l[i + 1] = t
+            except IndexError:
+                break
+        return ''.join(l)
 
-def Password(message: str, password: str):
-    '''A function to encrypy strings with given password.'''
-    if not _check_password(password):
-        showwarning('Warning', 'Invalid password')
-        raise ValueError
-    pw = (int(password) % 32)**2 % 11
-    new = f'{pw:02d}'[0]
-    for i in message:
-        if i.isalpha():
-            new += '-'
-            new += chr(ord(i)-pw)
-        elif i.isdigit():
-            new += '+'
-            new += chr(ord(i)+pw)
-        else:
-            new += '|'
-            new += i
-    new += f'{pw:02d}'[1]
-    return new
+    def B_insert(self, message: str):
+        '''A function to insert random characters to strings.
+        >>> B_insert('12345678')[::2]
+        '12345678'
+        >>> B_insert('abcdefgh')[::2]
+        'abcdefgh'
+        '''
+        l1 = list(message)
+        l2 = []
+        for i in l1:
+            l2.append(i)
+            l2.append(choice(CHOICE_STR))
+        return ''.join(l2)
 
+    def Y_rstrip(self, message: str):
+        '''A function to remove the spare characters in each pair of the string.
+        >>> Y_rstrip('12345678')
+        '1357'
+        >>> Y_rstrip('1a2b3c4d5e')
+        '12345'
+        '''
+        l = []
+        for i in range(0, len(message), 2):
+            l.append(message[i])
+        return ''.join(l)
 
-def passworD(message: str, password: str):
-    '''A function to decrypy strings with given password.'''
-    if not _check_password(password):
-        showwarning('Warning', 'Invalid password')
-        raise ValueError
-    pw = (int(password) % 32)**2 % 11
-    wp = int(message[0]+message[-1])
-    if (pw != wp):
-        showwarning('Warning', 'Invalid message')
-        raise ValueError
-    message = message[1:-1]
-    new = ''
-    for i in range(0, len(message), 2):
-        match message[i]:
-            case '-':
-                new += chr(ord(message[i+1])+pw)
-            case '+':
-                new += chr(ord(message[i+1])-pw)
-            case _:
-                new += message[i+1]
-    return new
+    def C_X_reverse(self, message: str):
+        '''A function to reverse strings.
+        >>> C_X_reverse('12345678')
+        '87654321'
+        >>> C_X_reverse('abcdefgh')
+        'hgfedcba'
+        '''
+        return ''.join(reversed(list(message)))
 
+    def Password(self, message: str, password: str):
+        '''A function to encrypy strings with given password.'''
+        if not self._check_password(password):
+            showwarning(None, 'Warning', 'Invalid password')
+            raise ValueError
+        pw = (int(password) % 32)**2 % 11
+        new = f'{pw:02d}'[0]
+        for i in message:
+            if i.isalpha():
+                new += '-'
+                new += chr(ord(i)-pw)
+            elif i.isdigit():
+                new += '+'
+                new += chr(ord(i)+pw)
+            else:
+                new += '|'
+                new += i
+        new += f'{pw:02d}'[1]
+        return new
 
-def _check_method(s: str):
-    for i in s.upper():
-        if i not in METHODS:
-            return False
-    return True
+    def passworD(self, message: str, password: str):
+        '''A function to decrypy strings with given password.'''
+        if not self._check_password(password):
+            showwarning(None, 'Warning', 'Invalid password')
+            raise ValueError
+        pw = (int(password) % 32)**2 % 11
+        wp = int(message[0]+message[-1])
+        if (pw != wp):
+            showwarning(None, 'Warning', 'Invalid message')
+            raise ValueError
+        message = message[1:-1]
+        new = ''
+        for i in range(0, len(message), 2):
+            match message[i]:
+                case '-':
+                    new += chr(ord(message[i+1])+pw)
+                case '+':
+                    new += chr(ord(message[i+1])-pw)
+                case _:
+                    new += message[i+1]
+        return new
 
-
-def _check_password(s: str):
-    try:
-        int(s)
-    except ValueError:
-        return False
-    else:
+    def _check_method(self, s: str):
+        for i in s.upper():
+            if i not in METHODS:
+                return False
         return True
 
+    def _check_password(self, s: str):
+        try:
+            int(s)
+        except ValueError:
+            return False
+        else:
+            return True
 
-def encrypt(message: str, method: str, password: str):
-    global encrypt_text
-    encrypt_text.delete('1.0', 'end')
-    message = message.replace(' ', '·')
+    def encrypt(self, message: str, method: str, password: str):
+        self.ui.out_text1.clear()
+        message = message.replace(' ', '·')
 
-    if not _check_method(method):
-        showwarning('Warning', 'Invalid method')
-        return
-    try:
-        message = Password(message, password)
-    except ValueError:
-        return
+        if not self._check_method(method):
+            showwarning(None, 'Warning', 'Invalid method')
+            return
+        try:
+            message = self.Password(message, password)
+        except ValueError:
+            return
 
-    for i in method.upper():
-        if i == 'A':
-            message = A_Z_swap(message)
-        elif i == 'B':
-            message = B_insert(message)
-        elif i == 'C':
-            message = C_X_reverse(message)
-    encrypt_text.insert('end', message)
+        for i in method.upper():
+            if i == 'A':
+                message = self.A_Z_swap(message)
+            elif i == 'B':
+                message = self.B_insert(message)
+            elif i == 'C':
+                message = self.C_X_reverse(message)
+        self.ui.out_text1.setPlainText(message)
 
+    def decrypt(self, message: str, method: str, password: str):
+        self.ui.out_text2.clear()
+        message = message.replace('·', ' ')
+        if not self._check_method(method):
+            showwarning(None, 'Warning', 'Invalid method')
+            return
 
-def decrypt(message: str, method: str, password: str):
-    global decrypt_text
-    decrypt_text.delete('1.0', 'end')
-    message = message.replace('·', ' ')
-    if not _check_method(method):
-        showwarning('Warning', 'Invalid method')
-        return
-
-    for i in reversed(method.upper()):
-        if i == 'A':
-            message = A_Z_swap(message)
-        elif i == 'B':
-            message = Y_rstrip(message)
-        elif i == 'C':
-            message = C_X_reverse(message)
-    try:
-        message = passworD(message, password)
-    except ValueError:
-        return
-    decrypt_text.insert('end', message)
-
-
-def main():
-    log('Enter main().')
-    global encrypt_text, decrypt_text
-    root = Tk()
-    root.title(f'EnDeCrypter v{__version__}')
-
-    # Spacer
-    Label(root, text=f' Encrypt Zone{' '*25}|{' '*25}Decrypt Zone').grid(
-        column=0, row=0, columnspan=5)
-
-    # Encrypt
-    l1 = Label(root, text='Message:')
-    l1.grid(column=0, row=1)
-
-    e1 = Entry(root, width=30)
-    e1.grid(column=1, row=1)
-
-    l2 = Label(root, text=' Method:')
-    l2.grid(column=0, row=2)
-
-    e2 = Entry(root, width=30)
-    e2.grid(column=1, row=2)
-
-    l3 = Label(root, text=' Password:')
-    l3.grid(column=0, row=3)
-
-    e3 = Entry(root, width=30)
-    e3.grid(column=1, row=3)
-
-    b1 = Button(
-        root,
-        text='Encrypt',
-        width=20,
-        command=lambda: encrypt(
-            e1.get(),
-            e2.get(),
-            e3.get()
-        ))
-    b1.grid(column=0, row=4, columnspan=2)
-
-    encrypt_text = Text(root, width=40, height=5)
-    encrypt_text.grid(column=0, row=5, columnspan=2)
-
-    # Spacer
-    Label(root, text='  ').grid(column=2, row=1)
-
-    # Decrypt
-    l4 = Label(root, text='Message:')
-    l4.grid(column=3, row=1)
-
-    e4 = Entry(root, width=30)
-    e4.grid(column=4, row=1)
-
-    l5 = Label(root, text=' Method:')
-    l5.grid(column=3, row=2)
-
-    e5 = Entry(root, width=30)
-    e5.grid(column=4, row=2)
-
-    l6 = Label(root, text=' Password:')
-    l6.grid(column=3, row=3)
-
-    e6 = Entry(root, width=30)
-    e6.grid(column=4, row=3)
-
-    b2 = Button(
-        root,
-        text='Decrypt',
-        width=20,
-        command=lambda: decrypt(
-            e4.get(),
-            e5.get(),
-            e6.get()
-        ))
-    b2.grid(column=3, row=4, columnspan=2)
-
-    decrypt_text = Text(root, width=40, height=5)
-    decrypt_text.grid(column=3, row=5, columnspan=2)
-
-    # End
-    B1 = Button(root, text='Quit', width=40, command=root.quit)
-    B1.grid(column=0, row=6, columnspan=2)
-
-    B2 = Button(
-        root,
-        text='Clear',
-        width=40,
-        command=lambda: [
-            e1.delete(0, 'end'),
-            e2.delete(0, 'end'),
-            e3.delete(0, 'end'),
-            e4.delete(0, 'end'),
-            e5.delete(0, 'end'),
-            e6.delete(0, 'end'),
-            encrypt_text.delete('1.0', 'end'),
-            decrypt_text.delete('1.0', 'end')
-        ])
-    B2.grid(column=3, row=6, columnspan=2)
-    log('Elements inited successfully.')
-    root.mainloop()
+        for i in reversed(method.upper()):
+            if i == 'A':
+                message = self.A_Z_swap(message)
+            elif i == 'B':
+                message = self.Y_rstrip(message)
+            elif i == 'C':
+                message = self.C_X_reverse(message)
+        try:
+            message = self.passworD(message, password)
+        except ValueError:
+            return
+        self.ui.out_text2.setPlainText(message)
 
 
 if __name__ == '__main__':
     initLog()
-    main()
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    app.exec()
     log('Program exited successfully.')
