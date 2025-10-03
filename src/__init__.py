@@ -10,14 +10,14 @@ from datetime import datetime
 from time import time
 from edcterGUI import Ui_root
 from random import choice
-from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QLineEdit
 from PySide6.QtWidgets import QMessageBox
 
 showwarning = QMessageBox.warning
 asksave = QFileDialog.getSaveFileName
 askload = QFileDialog.getOpenFileName
 
-__version__ = '1.0.0'
+__version__ = '1.1.1'
 METHODS = ['A', 'B', 'C']
 CHOICE_STR = 'qwe!@#$%&我你他的人了和着过的得地之乎者也如果那么*rtyudylgfshjsajkaSIGOGAIBIUTGUVCUDW^&MUYSiopASD[]{}()FGHJKL++--**|||@*#&@*uhuu|}{[]||///1123817212345678900987654321}'
 START: float = time()
@@ -49,6 +49,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_root()
         self.ui.setupUi(self)
+        self.setWindowTitle('EnDeCrypter v' + __version__)
         self.ui.out_text1.setReadOnly(True)
         self.ui.out_text2.setReadOnly(True)
 
@@ -75,7 +76,8 @@ class MainWindow(QMainWindow):
                 self.ui.psw_input2.text()
                 )
             )
-        
+        self.ui.psw_input1.setEchoMode(QLineEdit.Password) # type: ignore
+        self.ui.psw_input2.setEchoMode(QLineEdit.Password) # type: ignore
         self.ui.exit_button.clicked.connect(sys.exit)
 
     def saveMethod(self, box):
@@ -84,7 +86,7 @@ class MainWindow(QMainWindow):
             with open(filepath, 'w', encoding='utf-8') as file:
                 mtd = box.text()
                 if not self._check_method(mtd):
-                    showwarning(None, '错误', '非法的方法')
+                    showwarning(None, '错误', '非法的方法（错误代码：0x000001）')
                     return
                 file.write(mtd)
 
@@ -95,7 +97,7 @@ class MainWindow(QMainWindow):
             with open(filepath, 'r', encoding='utf-8') as file:
                 mtd = file.read()
                 if not self._check_method(mtd):
-                    showwarning(None, '错误', '非法的方法')
+                    showwarning(None, '错误', '非法的方法（错误代码：0x000001）')
                     return
                 box.setText(mtd)
 
@@ -167,7 +169,7 @@ class MainWindow(QMainWindow):
     def Password(self, message: str, password: str):
         '''A function to encrypy strings with given password.'''
         if not self._check_password(password):
-            showwarning(None, '错误', '非法的密码')
+            showwarning(None, '错误', '非法的密码（错误代码：0x000002）')
             raise ValueError
         pw = (int(password) % 32)**2 % 11
         new = f'{pw:02d}'[0]
@@ -187,12 +189,12 @@ class MainWindow(QMainWindow):
     def passworD(self, message: str, password: str):
         '''A function to decrypy strings with given password.'''
         if not self._check_password(password):
-            showwarning(None, '错误', '非法的密码')
+            showwarning(None, '错误', '非法的密码（错误代码：0x000002）')
             raise ValueError
         pw = (int(password) % 32)**2 % 11
         wp = int(message[0]+message[-1])
         if (pw != wp):
-            showwarning(None, '错误', '被篡改的消息')
+            showwarning(None, '错误', '解密失败（错误代码：0x000003）')
             raise ValueError
         message = message[1:-1]
         new = ''
@@ -225,7 +227,7 @@ class MainWindow(QMainWindow):
         message = message.replace(' ', '·')
 
         if not self._check_method(method):
-            showwarning(None, '错误', '非法的方法')
+            showwarning(None, '错误', '非法的方法（错误代码：0x000001）')
             return
         try:
             message = self.Password(message, password)
@@ -245,7 +247,7 @@ class MainWindow(QMainWindow):
         self.ui.out_text2.clear()
         message = message.replace('·', ' ')
         if not self._check_method(method):
-            showwarning(None, '错误', '非法的方法')
+            showwarning(None, '错误', '非法的方法（错误代码：0x000001）')
             return
 
         for i in reversed(method.upper()):
