@@ -181,6 +181,15 @@
           </widget>
          </item>
         </layout>
+        <zorder>mtd_label1</zorder>
+        <zorder>mtd_input1</zorder>
+        <zorder>msg_label1</zorder>
+        <zorder>msg_input1</zorder>
+        <zorder>out_text1</zorder>
+        <zorder>out_label1</zorder>
+        <zorder>encrypt_button</zorder>
+        <zorder>psw_input1</zorder>
+        <zorder>psw_label1</zorder>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_2">

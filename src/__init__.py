@@ -10,7 +10,7 @@ from datetime import datetime
 from time import time
 from edcterGUI import Ui_root
 from random import choice
-from PySide6.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget
+from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtWidgets import QMessageBox
 showwarning = QMessageBox.warning
 
@@ -19,8 +19,10 @@ METHODS = ['A', 'B', 'C']
 CHOICE_STR = 'qwe!@#$%&我你他的人了和着过的得地之乎者也如果那么*rtyudylgfshjsajkaSIGOGAIBIUTGUVCUDW^&MUYSiopASD[]{}()FGHJKL++--**|||@*#&@*uhuu|}{[]||///1123817212345678900987654321}'
 START: float = time()
 rootPath = Path(__file__).parent
-_DEBUG_MODE = True
-
+if '-D' in sys.argv or '--debug' in sys.argv:
+    _DEBUG_MODE = True
+else:
+    _DEBUG_MODE = False
 
 def initLog():
     if not _DEBUG_MODE:
@@ -135,7 +137,7 @@ class MainWindow(QMainWindow):
     def Password(self, message: str, password: str):
         '''A function to encrypy strings with given password.'''
         if not self._check_password(password):
-            showwarning(None, 'Warning', 'Invalid password')
+            showwarning(None, '错误', '非法的密码')
             raise ValueError
         pw = (int(password) % 32)**2 % 11
         new = f'{pw:02d}'[0]
@@ -155,12 +157,12 @@ class MainWindow(QMainWindow):
     def passworD(self, message: str, password: str):
         '''A function to decrypy strings with given password.'''
         if not self._check_password(password):
-            showwarning(None, 'Warning', 'Invalid password')
+            showwarning(None, '错误', '非法的密码')
             raise ValueError
         pw = (int(password) % 32)**2 % 11
         wp = int(message[0]+message[-1])
         if (pw != wp):
-            showwarning(None, 'Warning', 'Invalid message')
+            showwarning(None, '错误', '被篡改的消息')
             raise ValueError
         message = message[1:-1]
         new = ''
@@ -193,7 +195,7 @@ class MainWindow(QMainWindow):
         message = message.replace(' ', '·')
 
         if not self._check_method(method):
-            showwarning(None, 'Warning', 'Invalid method')
+            showwarning(None, '错误', '非法的方法')
             return
         try:
             message = self.Password(message, password)
@@ -213,7 +215,7 @@ class MainWindow(QMainWindow):
         self.ui.out_text2.clear()
         message = message.replace('·', ' ')
         if not self._check_method(method):
-            showwarning(None, 'Warning', 'Invalid method')
+            showwarning(None, '错误', '非法的方法')
             return
 
         for i in reversed(method.upper()):
@@ -236,4 +238,4 @@ if __name__ == '__main__':
     window = MainWindow()
     window.show()
     app.exec()
-    log('Program exited successfully.')
+    log('程序成功退出')
