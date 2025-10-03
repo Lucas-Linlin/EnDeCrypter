@@ -10,9 +10,12 @@ from datetime import datetime
 from time import time
 from edcterGUI import Ui_root
 from random import choice
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PySide6.QtWidgets import QMessageBox
+
 showwarning = QMessageBox.warning
+asksave = QFileDialog.getSaveFileName
+askload = QFileDialog.getOpenFileName
 
 __version__ = '1.0.0'
 METHODS = ['A', 'B', 'C']
@@ -49,6 +52,12 @@ class MainWindow(QMainWindow):
         self.ui.out_text1.setReadOnly(True)
         self.ui.out_text2.setReadOnly(True)
 
+        self.ui.mtdSave_button1.clicked.connect(lambda: self.saveMethod(self.ui.mtd_input1))
+        self.ui.mtdLoad_button1.clicked.connect(lambda: self.loadMethod(self.ui.mtd_input1))
+
+        self.ui.mtdSave_button2.clicked.connect(lambda: self.saveMethod(self.ui.mtd_input2))
+        self.ui.mtdLoad_button2.clicked.connect(lambda: self.loadMethod(self.ui.mtd_input2))
+
         self.ui.clear_button.clicked.connect(self.clear_boxes)
 
         self.ui.encrypt_button.clicked.connect(
@@ -68,6 +77,27 @@ class MainWindow(QMainWindow):
             )
         
         self.ui.exit_button.clicked.connect(sys.exit)
+
+    def saveMethod(self, box):
+        filepath, _ = asksave(None, "保存当前方法","","方法 (*.mtd)")
+        if filepath:
+            with open(filepath, 'w', encoding='utf-8') as file:
+                mtd = box.text()
+                if not self._check_method(mtd):
+                    showwarning(None, '错误', '非法的方法')
+                    return
+                file.write(mtd)
+
+    def loadMethod(self,box):
+        filepath, _ = askload(None, "从文件加载方法","","方法 (*.mtd)")
+        if filepath:
+            box.clear()
+            with open(filepath, 'r', encoding='utf-8') as file:
+                mtd = file.read()
+                if not self._check_method(mtd):
+                    showwarning(None, '错误', '非法的方法')
+                    return
+                box.setText(mtd)
 
     def clear_boxes(self):
         self.ui.msg_input1.clear()
