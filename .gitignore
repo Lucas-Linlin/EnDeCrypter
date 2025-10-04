@@ -2,6 +2,8 @@
 \dist
 \__pycache__
 \Program
+\src\__pycache__
+\src\ui
 *.bat
 *.spec
 *.exe
