@@ -36,6 +36,9 @@
         <family>Consolas</family>
        </font>
       </property>
+      <property name="toolTip">
+       <string>退出加解密器</string>
+      </property>
       <property name="text">
        <string>退出</string>
       </property>
@@ -47,6 +50,9 @@
        <font>
         <family>Consolas</family>
        </font>
+      </property>
+      <property name="toolTip">
+       <string>清空所有输入输出框</string>
       </property>
       <property name="text">
        <string>清空</string>
@@ -137,6 +143,9 @@
              <family>Consolas</family>
             </font>
            </property>
+           <property name="toolTip">
+            <string>由大写或小写字母‘a’、‘b’或‘c'构成的一串字符</string>
+           </property>
           </widget>
          </item>
          <item row="4" column="1" colspan="2">
@@ -146,6 +155,12 @@
              <family>Consolas</family>
             </font>
            </property>
+           <property name="toolTip">
+            <string>在这里看到加密结果（只可选中，不可编辑）</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item row="0" column="1" colspan="2">
@@ -154,6 +169,9 @@
             <font>
              <family>Consolas</family>
             </font>
+           </property>
+           <property name="toolTip">
+            <string>要加密的秘密消息</string>
            </property>
           </widget>
          </item>
@@ -201,6 +219,9 @@
             <layout class="QGridLayout" name="mtd_layout1">
              <item row="0" column="0">
               <widget class="QPushButton" name="mtdLoad_button1">
+               <property name="toolTip">
+                <string>从本地文件中加载一个方法</string>
+               </property>
                <property name="text">
                 <string>加载现有方法文件</string>
                </property>
@@ -208,6 +229,9 @@
              </item>
              <item row="0" column="1">
               <widget class="QPushButton" name="mtdSave_button1">
+               <property name="toolTip">
+                <string>把当前的方法保存到本地文件</string>
+               </property>
                <property name="text">
                 <string>保存当前方法</string>
                </property>
@@ -224,6 +248,9 @@
              <family>Consolas</family>
             </font>
            </property>
+           <property name="toolTip">
+            <string>加密您的消息</string>
+           </property>
            <property name="text">
             <string>加密</string>
            </property>
@@ -236,17 +263,11 @@
              <family>Consolas</family>
             </font>
            </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QToolButton" name="pswToggle_button2_2">
-           <property name="text">
-            <string>切换密码可见性</string>
+           <property name="toolTip">
+            <string>一串数字（建议为正整数）</string>
            </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../../images/disabled.ico</normaloff>
-             <normalon>../../images/enabled.ico</normalon>../../images/disabled.ico</iconset>
+           <property name="echoMode">
+            <enum>QLineEdit::EchoMode::PasswordEchoOnEdit</enum>
            </property>
           </widget>
          </item>
@@ -261,7 +282,6 @@
         <zorder>psw_input1</zorder>
         <zorder>psw_label1</zorder>
         <zorder>mtdFile1</zorder>
-        <zorder>pswToggle_button2_2</zorder>
        </widget>
       </widget>
       <widget class="QWidget" name="decrypt_zone">
@@ -280,47 +300,78 @@
           <height>271</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>Consolas</family>
+         </font>
+        </property>
         <layout class="QGridLayout" name="dct_layout">
-         <item row="4" column="0">
-          <widget class="QLabel" name="out_label2">
-           <property name="text">
-            <string>输出</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="mtd_label2">
+           <property name="font">
+            <font>
+             <family>Consolas</family>
+            </font>
+           </property>
            <property name="text">
             <string>方法</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="psw_input2"/>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="psw_label2">
+         <item row="4" column="0">
+          <widget class="QLabel" name="out_label2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <family>Consolas</family>
+            </font>
+           </property>
            <property name="text">
-            <string>密码</string>
+            <string>输出</string>
            </property>
           </widget>
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="msg_label2">
+           <property name="font">
+            <font>
+             <family>Consolas</family>
+            </font>
+           </property>
            <property name="text">
             <string>消息</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="2">
-          <widget class="QToolButton" name="pswToggle_button2">
-           <property name="text">
-            <string>切换密码可见性</string>
+         <item row="1" column="1" colspan="2">
+          <widget class="QLineEdit" name="mtd_input2">
+           <property name="font">
+            <font>
+             <family>Consolas</family>
+            </font>
            </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../../images/disabled.ico</normaloff>
-             <normalon>../../images/enabled.ico</normalon>../../images/disabled.ico</iconset>
+           <property name="toolTip">
+            <string>加密时输入的方法</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1" colspan="2">
+          <widget class="QTextEdit" name="out_text2">
+           <property name="font">
+            <font>
+             <family>Consolas</family>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>在这里看到解密结果（只可选中，不可编辑）</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -331,10 +382,22 @@
              <family>Consolas</family>
             </font>
            </property>
+           <property name="toolTip">
+            <string>要解密的秘密消息</string>
+           </property>
           </widget>
          </item>
-         <item row="1" column="1" colspan="2">
-          <widget class="QLineEdit" name="mtd_input2"/>
+         <item row="3" column="0">
+          <widget class="QLabel" name="psw_label2">
+           <property name="font">
+            <font>
+             <family>Consolas</family>
+            </font>
+           </property>
+           <property name="text">
+            <string>密码</string>
+           </property>
+          </widget>
          </item>
          <item row="2" column="0" colspan="3">
           <widget class="QGroupBox" name="mtdFile2">
@@ -368,6 +431,9 @@
             <layout class="QGridLayout" name="mtd_layout2">
              <item row="0" column="0">
               <widget class="QPushButton" name="mtdLoad_button2">
+               <property name="toolTip">
+                <string>从本地文件中加载一个方法</string>
+               </property>
                <property name="text">
                 <string>加载现有方法文件</string>
                </property>
@@ -375,6 +441,9 @@
              </item>
              <item row="0" column="1">
               <widget class="QPushButton" name="mtdSave_button2">
+               <property name="toolTip">
+                <string>把当前的方法保存到本地文件</string>
+               </property>
                <property name="text">
                 <string>保存当前方法</string>
                </property>
@@ -384,13 +453,33 @@
            </widget>
           </widget>
          </item>
-         <item row="4" column="1" colspan="2">
-          <widget class="QTextEdit" name="out_text2"/>
-         </item>
          <item row="5" column="0" colspan="3">
           <widget class="QPushButton" name="decrypt_button">
+           <property name="font">
+            <font>
+             <family>Consolas</family>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>解密您的消息</string>
+           </property>
            <property name="text">
             <string>解密</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="psw_input2">
+           <property name="font">
+            <font>
+             <family>Consolas</family>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>加密时输入的密码</string>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::EchoMode::PasswordEchoOnEdit</enum>
            </property>
           </widget>
          </item>

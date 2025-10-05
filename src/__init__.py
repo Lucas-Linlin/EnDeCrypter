@@ -50,8 +50,6 @@ class MainWindow(QMainWindow):
         self.ui = Ui_root()
         self.ui.setupUi(self)
         self.setWindowTitle('EnDeCrypter v' + __version__)
-        self.ui.out_text1.setReadOnly(True)
-        self.ui.out_text2.setReadOnly(True)
 
         self.ui.mtdSave_button1.clicked.connect(lambda: self.saveMethod(self.ui.mtd_input1))
         self.ui.mtdLoad_button1.clicked.connect(lambda: self.loadMethod(self.ui.mtd_input1))
@@ -76,8 +74,6 @@ class MainWindow(QMainWindow):
                 self.ui.psw_input2.text()
                 )
             )
-        self.ui.psw_input1.setEchoMode(QLineEdit.Password) # type: ignore
-        self.ui.psw_input2.setEchoMode(QLineEdit.Password) # type: ignore
         self.ui.exit_button.clicked.connect(sys.exit)
 
     def saveMethod(self, box):
