@@ -57,8 +57,6 @@ class MainWindow(QMainWindow):
         self.ui.mtdSave_button2.clicked.connect(lambda: self.saveMethod(self.ui.mtd_input2))
         self.ui.mtdLoad_button2.clicked.connect(lambda: self.loadMethod(self.ui.mtd_input2))
 
-        self.ui.clear_button.clicked.connect(self.clear_boxes)
-
         self.ui.encrypt_button.clicked.connect(
             lambda: self.encrypt(
                 self.ui.msg_input1.text(),
@@ -96,19 +94,6 @@ class MainWindow(QMainWindow):
                     showwarning(None, '错误', '非法的方法（错误代码：0x000001）')
                     return
                 box.setText(mtd)
-
-    def clear_boxes(self):
-        self.ui.msg_input1.clear()
-        self.ui.msg_input2.clear()
-
-        self.ui.mtd_input1.clear()
-        self.ui.mtd_input2.clear()
-
-        self.ui.psw_input1.clear()
-        self.ui.psw_input2.clear()
-
-        self.ui.out_text1.clear()
-        self.ui.out_text2.clear()
 
     def A_Z_swap(self, message: str):
         '''A function to swap strings.
@@ -262,7 +247,7 @@ class MainWindow(QMainWindow):
 
 if __name__ == '__main__':
     initLog()
-    app = QApplication(sys.argv)
+    app = QApplication(sys.argv) #type:ignore
     window = MainWindow()
     window.show()
     app.exec()

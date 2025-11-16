@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'edcterGUIexHDqE.ui'
+## Form generated from reading UI file 'edcterGUIUligds.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.2
 ##
@@ -250,6 +250,16 @@ class Ui_root(object):
 
 
         self.retranslateUi(root)
+        self.encrypt_button.clicked.connect(self.out_text1.copy)
+        self.decrypt_button.clicked.connect(self.out_text2.copy)
+        self.clear_button.clicked.connect(self.out_text2.clear)
+        self.clear_button.clicked.connect(self.psw_input2.clear)
+        self.clear_button.clicked.connect(self.mtd_input2.clear)
+        self.clear_button.clicked.connect(self.msg_input2.clear)
+        self.clear_button.clicked.connect(self.out_text1.clear)
+        self.clear_button.clicked.connect(self.psw_input1.clear)
+        self.clear_button.clicked.connect(self.mtd_input1.clear)
+        self.clear_button.clicked.connect(self.msg_input1.clear)
 
         self.main_tab.setCurrentIndex(0)
 

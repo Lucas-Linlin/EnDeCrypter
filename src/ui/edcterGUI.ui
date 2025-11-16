@@ -492,5 +492,166 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>encrypt_button</sender>
+   <signal>clicked()</signal>
+   <receiver>out_text1</receiver>
+   <slot>copy()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>142</x>
+     <y>280</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>172</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>decrypt_button</sender>
+   <signal>clicked()</signal>
+   <receiver>out_text2</receiver>
+   <slot>copy()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>176</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>182</x>
+     <y>204</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button</sender>
+   <signal>clicked()</signal>
+   <receiver>out_text2</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>110</x>
+     <y>318</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>216</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button</sender>
+   <signal>clicked()</signal>
+   <receiver>psw_input2</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>64</x>
+     <y>317</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>106</x>
+     <y>109</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button</sender>
+   <signal>clicked()</signal>
+   <receiver>mtd_input2</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>61</x>
+     <y>321</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>76</x>
+     <y>61</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button</sender>
+   <signal>clicked()</signal>
+   <receiver>msg_input2</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>49</x>
+     <y>320</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>147</x>
+     <y>35</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button</sender>
+   <signal>clicked()</signal>
+   <receiver>out_text1</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>313</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>94</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button</sender>
+   <signal>clicked()</signal>
+   <receiver>psw_input1</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>65</x>
+     <y>320</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>108</x>
+     <y>109</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button</sender>
+   <signal>clicked()</signal>
+   <receiver>mtd_input1</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>129</x>
+     <y>319</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>62</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button</sender>
+   <signal>clicked()</signal>
+   <receiver>msg_input1</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>147</x>
+     <y>319</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>143</x>
+     <y>43</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
